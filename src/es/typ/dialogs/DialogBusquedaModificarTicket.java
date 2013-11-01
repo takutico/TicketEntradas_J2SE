@@ -1,0 +1,396 @@
+/*
+ * ModificarTicket.java
+ *
+ * Created on 02-mar-2010, 0:02:41
+ */
+package es.typ.dialogs;
+
+import es.typ.frames.FramePrincipal;
+import es.typ.ticket.Ticket;
+import es.typ.ticket.TicketData;
+import es.typ.tickettype.TicketType;
+import es.typ.tickettype.TicketTypeData;
+import es.typ.utils.Log;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.RowFilter;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+
+/**
+ *
+ * @author Takuya
+ */
+public class DialogBusquedaModificarTicket extends javax.swing.JDialog {
+
+    private TicketType ticketType = new TicketType();
+    private Ticket ticket = new Ticket();
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat sdf2 = new SimpleDateFormat("dd-MM-yyyy");
+    private static SimpleDateFormat sdfhour = new SimpleDateFormat("hh:mm:ss");
+    private FramePrincipal framePrincipal;
+    private DefaultComboBoxModel modeloCmb;
+    private String fechaInicio = "";
+    private String fechaFin = "";
+    private String tipoTicket = "";
+
+    /** Creates new form ModificarTicket */
+    public DialogBusquedaModificarTicket(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
+        this.framePrincipal = (FramePrincipal) parent;
+        initComponents();
+        cargarTipoTickets();
+        cargarTickets("","","");
+        setLocationRelativeTo(null);
+    }
+
+    private void cargarTickets(String fechaInico, String fechaFin, String tipoTicket) {
+        try{
+        /*DefaultTableModel  modelo = new DefaultTableModel();
+        ArrayList datosAL = ticketType.getTicketTypeDAO().getTicketType();
+        for (int i = 0; i < datosAL.size(); i++) {
+        Object[] dat = {((TicketTypeData)datosAL.get(i)).getName()};
+        modelo.addRow(dat);
+
+        }
+        jTable1.setModel(modelo);
+        jTable1.repaint();*/
+        //jTable1.removeAll();
+        DefaultTableModel modelo = ((DefaultTableModel) jTable1.getModel());
+        ArrayList datosAL = ticket.getTicketDAO().getTickets(fechaInico, fechaFin, tipoTicket);
+        String[] tickes = new String[4];//ARRAY DE 4
+        for (int i = jTable1.getRowCount() - 1; i >= 0; i--) {
+            modelo.removeRow(i);
+        }
+//LE PASO AL ARRAY LOS DATOS DEL ARRAYLIST
+
+        for (int i = 0; i < datosAL.size(); i++) {
+            tickes[0] = sdf2.format(sdf.parse(((TicketData) datosAL.get(i)).getDia()));
+            tickes[1] = ((TicketData) datosAL.get(i)).getHora();
+            tickes[2] = ((TicketData) datosAL.get(i)).getTicketTypeName();
+            tickes[3] = ((TicketData) datosAL.get(i)).getNumeroEntradas() + "";
+            modelo.addRow(tickes);
+        }
+
+        // Instanciamos el TableRowSorter y lo añadimos al JTable
+        /*TableRowSorter<TableModel> modeloOrdenado = new TableRowSorter<TableModel>(modelo);
+        jTable1.setRowSorter(modeloOrdenado);
+        modeloOrdenado.setRowFilter(RowFilter.regexFilter("2", 2));*/
+        jTable1.setModel(modelo);
+        jTable1.repaint();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            Log.getInstance().log(e.getMessage());
+        }
+    }
+
+    private void actualizarTickets() {
+        try{
+        DefaultTableModel modelo = ((DefaultTableModel) jTable1.getModel());
+        ArrayList datosAL = ticket.getTicketDAO().getTickets("", "", "");
+        String[] tickes = new String[4];//ARRAY DE 4
+
+//LE PASO AL ARRAY LOS DATOS DEL ARRAYLIST
+
+        for (int i = 0; i < datosAL.size(); i++) {
+            tickes[0] = sdf2.format(sdf.parse(((TicketData) datosAL.get(i)).getDia()));
+            tickes[1] = ((TicketData) datosAL.get(i)).getHora();
+            tickes[2] = ((TicketData) datosAL.get(i)).getTicketTypeName();
+            tickes[3] = ((TicketData) datosAL.get(i)).getNumeroEntradas() + "";
+            modelo.addRow(tickes);
+        }
+        jTable1.setModel(modelo);
+        jTable1.repaint();
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            Log.getInstance().log(e.getMessage());
+        }
+    }
+
+    private void cargarTipoTickets() {
+        modeloCmb = ((DefaultComboBoxModel) jComboBox1.getModel());
+        ArrayList datosAL = ticketType.getTicketTypeDAO().getTicketType();
+        String[] tipoTickes = new String[1];
+
+        //LE PASO AL ARRAY LOS DATOS DEL ARRAYLIST
+        for (int i = 0; i < datosAL.size(); i++) {
+            tipoTickes[0] = ((TicketTypeData) datosAL.get(i)).getName();
+            modeloCmb.addElement(tipoTickes[0]);
+        }
+        jComboBox1.setModel(modeloCmb);
+        jComboBox1.repaint();
+    }
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+  // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+  private void initComponents() {
+
+    jPanel1 = new javax.swing.JPanel();
+    jPanel6 = new javax.swing.JPanel();
+    jLabel1 = new javax.swing.JLabel();
+    jLabel2 = new javax.swing.JLabel();
+    jLabel3 = new javax.swing.JLabel();
+    txtFFin = new javax.swing.JTextField();
+    txtFInicio = new javax.swing.JTextField();
+    jButton1 = new javax.swing.JButton();
+    jButton2 = new javax.swing.JButton();
+    jComboBox1 = new javax.swing.JComboBox();
+    jPanel2 = new javax.swing.JPanel();
+    jScrollPane1 = new javax.swing.JScrollPane();
+    jTable1 = new javax.swing.JTable();
+    jPanel3 = new javax.swing.JPanel();
+    jPanel4 = new javax.swing.JPanel();
+    jPanel5 = new javax.swing.JPanel();
+
+    setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+    jPanel1.setPreferredSize(new java.awt.Dimension(715, 170));
+
+    jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Filtro"));
+
+    jLabel1.setText("Fecha inicio");
+
+    jLabel2.setText("Fecha fin");
+
+    jLabel3.setText("Tipo ticket");
+
+    txtFFin.setText("dd-mm-aaaa");
+
+    txtFInicio.setText("dd-mm-aaaa");
+
+    jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/TicketEntradas_J2SE/images/Search.png"))); // NOI18N
+    jButton1.setText("Buscar");
+    jButton1.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton1ActionPerformed(evt);
+      }
+    });
+
+    jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/es/TicketEntradas_J2SE/images/eraser_1.png"))); // NOI18N
+    jButton2.setText("Limpiar");
+    jButton2.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButton2ActionPerformed(evt);
+      }
+    });
+
+    javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+    jPanel6.setLayout(jPanel6Layout);
+    jPanel6Layout.setHorizontalGroup(
+      jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(jPanel6Layout.createSequentialGroup()
+        .addGap(86, 86, 86)
+        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(jLabel1)
+          .addComponent(jLabel2)
+          .addComponent(jLabel3))
+        .addGap(45, 45, 45)
+        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+          .addGroup(jPanel6Layout.createSequentialGroup()
+            .addComponent(jButton1)
+            .addGap(31, 31, 31)
+            .addComponent(jButton2))
+          .addComponent(txtFFin, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(txtFInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        .addContainerGap(119, Short.MAX_VALUE))
+    );
+    jPanel6Layout.setVerticalGroup(
+      jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(jPanel6Layout.createSequentialGroup()
+        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(txtFInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jLabel1))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(txtFFin, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addComponent(jLabel2))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jLabel3)
+          .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+          .addComponent(jButton1)
+          .addComponent(jButton2)))
+    );
+
+    javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+    jPanel1.setLayout(jPanel1Layout);
+    jPanel1Layout.setHorizontalGroup(
+      jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(jPanel1Layout.createSequentialGroup()
+        .addGap(97, 97, 97)
+        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addContainerGap(96, Short.MAX_VALUE))
+    );
+    jPanel1Layout.setVerticalGroup(
+      jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGroup(jPanel1Layout.createSequentialGroup()
+        .addContainerGap()
+        .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        .addContainerGap())
+    );
+
+    getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
+    jPanel2.setLayout(new java.awt.BorderLayout());
+
+    jScrollPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
+    jTable1.setModel(new javax.swing.table.DefaultTableModel(
+      new Object [][] {
+
+      },
+      new String [] {
+        "Fecha", "Hora", "Tipo ticket", "Nº Entradas"
+      }
+    ) {
+      boolean[] canEdit = new boolean [] {
+        false, false, false, false
+      };
+
+      public boolean isCellEditable(int rowIndex, int columnIndex) {
+        return canEdit [columnIndex];
+      }
+    });
+    jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        jTable1MouseClicked(evt);
+      }
+    });
+    jScrollPane1.setViewportView(jTable1);
+
+    jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+    getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
+
+    javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+    jPanel3.setLayout(jPanel3Layout);
+    jPanel3Layout.setHorizontalGroup(
+      jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 715, Short.MAX_VALUE)
+    );
+    jPanel3Layout.setVerticalGroup(
+      jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 100, Short.MAX_VALUE)
+    );
+
+    getContentPane().add(jPanel3, java.awt.BorderLayout.PAGE_END);
+
+    javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+    jPanel4.setLayout(jPanel4Layout);
+    jPanel4Layout.setHorizontalGroup(
+      jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 120, Short.MAX_VALUE)
+    );
+    jPanel4Layout.setVerticalGroup(
+      jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 185, Short.MAX_VALUE)
+    );
+
+    getContentPane().add(jPanel4, java.awt.BorderLayout.LINE_END);
+
+    javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+    jPanel5.setLayout(jPanel5Layout);
+    jPanel5Layout.setHorizontalGroup(
+      jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 100, Short.MAX_VALUE)
+    );
+    jPanel5Layout.setVerticalGroup(
+      jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+      .addGap(0, 185, Short.MAX_VALUE)
+    );
+
+    getContentPane().add(jPanel5, java.awt.BorderLayout.LINE_START);
+
+    pack();
+  }// </editor-fold>//GEN-END:initComponents
+
+    private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
+        try {
+            if (evt.getClickCount() == 2) {
+                ticket = new Ticket();
+                ticket.getTicketData().setDia(jTable1.getValueAt(jTable1.getSelectedRow(), 0) + "");
+                ticket.getTicketData().setHora(jTable1.getValueAt(jTable1.getSelectedRow(), 1) + "");
+                ticket.getTicketData().setTicketTypeName(jTable1.getValueAt(jTable1.getSelectedRow(), 2) + "");
+                ticket.getTicketData().setNumeroEntradas(Integer.parseInt(jTable1.getValueAt(jTable1.getSelectedRow(), 3) + ""));
+
+                /*String fecha = jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
+                String hora = jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString();
+                String tipoTicket = jTable1.getValueAt(jTable1.getSelectedRow(), 2).toString();
+                String numEntrada = jTable1.getValueAt(jTable1.getSelectedRow(), 3).toString();*/
+                new DialogModificarTicket(framePrincipal, true, modeloCmb, ticket).setVisible(true);
+                cargarTickets(fechaInicio, fechaFin, tipoTicket);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            Log.getInstance().log(e.getMessage());
+        }
+    }//GEN-LAST:event_jTable1MouseClicked
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try{
+        fechaInicio = sdf.format(sdf2.parse(txtFInicio.getText()));
+        fechaFin = sdf.format(sdf2.parse(txtFFin.getText()));
+        tipoTicket = jComboBox1.getSelectedItem().toString();
+        } catch(Exception e){
+            System.out.println(e.getMessage());
+            fechaInicio = "";
+            fechaFin = "";
+            Log.getInstance().log(e.getMessage());
+        }
+        cargarTickets(fechaInicio, fechaFin, tipoTicket);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        txtFFin.setText("dd-MM-yyyy");
+        txtFInicio.setText("dd-MM-yyyy");
+        fechaFin = "";
+        fechaInicio = "";
+        tipoTicket = "";
+        cargarTickets(fechaInicio, fechaFin, tipoTicket);
+    }//GEN-LAST:event_jButton2ActionPerformed
+    /**
+     * @param args the command line arguments
+    
+    public static void main(String args[]) {
+    java.awt.EventQueue.invokeLater(new Runnable() {
+    public void run() {
+    BusquedaModificarTicket dialog = new BusquedaModificarTicket(new javax.swing.JFrame(), true);
+    dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+    public void windowClosing(java.awt.event.WindowEvent e) {
+    System.exit(0);
+    }
+    });
+    dialog.setVisible(true);
+    }
+    });
+    }*/
+  // Variables declaration - do not modify//GEN-BEGIN:variables
+  private javax.swing.JButton jButton1;
+  private javax.swing.JButton jButton2;
+  private javax.swing.JComboBox jComboBox1;
+  private javax.swing.JLabel jLabel1;
+  private javax.swing.JLabel jLabel2;
+  private javax.swing.JLabel jLabel3;
+  private javax.swing.JPanel jPanel1;
+  private javax.swing.JPanel jPanel2;
+  private javax.swing.JPanel jPanel3;
+  private javax.swing.JPanel jPanel4;
+  private javax.swing.JPanel jPanel5;
+  private javax.swing.JPanel jPanel6;
+  private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JTable jTable1;
+  private javax.swing.JTextField txtFFin;
+  private javax.swing.JTextField txtFInicio;
+  // End of variables declaration//GEN-END:variables
+}
